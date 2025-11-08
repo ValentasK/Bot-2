@@ -1,0 +1,7 @@
+“run pip using this specific Python interpreter”.
+Navigate to the python.exe forlder
+Make sure to use CMD
+
+python -m pip install openai
+
+python -m pip install aiohttp discord.py
