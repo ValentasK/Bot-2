@@ -7,7 +7,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 from openai_chat import openai_chat
-from agent import openai_agent
+from langgraph_agent import langgraph_agent
 import config
 
 # Load environment variables from .env file
@@ -56,9 +56,14 @@ async def on_message(message: discord.Message):
     # If message starts with ! but is not a valid command, provide help
     if message.content.startswith(config.COMMAND_PREFIX) and not message.author.bot:
         command = message.content.split()[0].lower()
-        valid_commands = [f"{config.COMMAND_PREFIX}{config.CMD_PING}", f"{config.COMMAND_PREFIX}{config.CMD_AI}", f"{config.COMMAND_PREFIX}{config.CMD_AGENT}"]
+        valid_commands = [f"{config.COMMAND_PREFIX}{config.CMD_PING}", f"{config.COMMAND_PREFIX}{config.CMD_AI}", f"{config.COMMAND_PREFIX}lg"]
         if command not in valid_commands:
-            await message.channel.send(config.MSG_UNKNOWN_COMMAND)
+            await message.channel.send(
+                "❓ Unknown command. Available commands:\n"
+                "• `!ping` - Check if bot is alive\n"
+                "• `!ai <question>` - Ask OpenAI a question\n"
+                "• `!lg <task>` - Use LangGraph agent with tools"
+            )
             return
     
     # Process commands (important: without this, commands won't work)
@@ -82,15 +87,15 @@ async def ai(ctx: commands.Context, *, prompt: str = ""):
         reply = reply[:config.DISCORD_CHAR_LIMIT] + "…"
     await ctx.send(reply)
 
-@bot.command(name=config.CMD_AGENT)
-async def agent(ctx: commands.Context, *, task: str = ""):
+@bot.command(name="lg")
+async def langgraph(ctx: commands.Context, *, task: str = ""):
+    """Use LangGraph agent (stateful graph-based workflow)."""
     if not task:
-        await ctx.send(config.MSG_AGENT_USAGE)
+        await ctx.send("Usage: `!lg <task description>`")
         return
-    log.info(config.MSG_USER_REQUESTED_TASK, ctx.author, task)
+    log.info("User %s requested LangGraph task: %s", ctx.author, task)
     await ctx.channel.typing()
-    async with aiohttp.ClientSession() as session:
-        reply = await openai_agent(session, task, max_steps=config.MAX_AGENT_STEPS)
+    reply = await langgraph_agent(task, max_iterations=config.LANGGRAPH_MAX_ITERATIONS)
     if len(reply) > config.DISCORD_CHAR_LIMIT:
         reply = reply[:config.DISCORD_CHAR_LIMIT] + "…"
     await ctx.send(reply)

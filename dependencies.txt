@@ -1,7 +1,9 @@
-“run pip using this specific Python interpreter”.
-Navigate to the python.exe forlder
-Make sure to use CMD
+"run pip using this specific Python interpreter".
+"Navigate to the python.exe forlder".
+"Make sure to use CMD".
 
 python -m pip install openai
 
 python -m pip install aiohttp discord.py
+
+python -m pip install langgraph langchain-openai langchain-core
