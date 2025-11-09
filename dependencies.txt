@@ -4,6 +4,37 @@
 
 python -m pip install openai
 
+python -m pip install python-dotenv
+
 python -m pip install aiohttp discord.py
 
 python -m pip install langgraph langchain-openai langchain-core
+
+
+-------------------------
+ctrl + H to see hidden files
+-------
+ "To run on Linux"
+
+# 1. Make sure you have Python and pip
+sudo apt update
+sudo apt install -y python3 python3-pip
+
+# 2. Ensure ~/.local/bin is on your PATH (once)
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+
+cd ~/Desktop/Python
+python3 -m venv .venv
+--> To check ls -la
+should show .venv Fail
+--> run the script:
+source .venv/bin/activate
+shoud appear: 9.venv
+--> run the scripts 
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+
+# 4. Run your bot
+python3 AgenticAI.py
+

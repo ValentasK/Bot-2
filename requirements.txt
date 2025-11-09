@@ -1,0 +1,7 @@
+openai
+python-dotenv
+aiohttp
+discord.py
+langgraph
+langchain-openai
+langchain-core
