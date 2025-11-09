@@ -45,3 +45,15 @@ MSG_MISSING_ENV_VARS = "Missing required env vars. Set DISCORD_TOKEN and OPENAI_
 DISCORD_CHAR_LIMIT = 1900
 MAX_AGENT_STEPS = 4
 
+# OpenAI Chat Configuration
+OPENAI_SYSTEM_MESSAGE = "You are a helpful assistant. Be concise."
+OPENAI_TIMEOUT = 120
+OPENAI_LOG_REQUEST = "[OpenAI] Request: %s"
+OPENAI_LOG_STATUS = "[OpenAI] Status: %s %s"
+OPENAI_LOG_RESPONSE = "[OpenAI] Raw response: %s"
+OPENAI_ERROR_MESSAGE = "❌ OpenAI error: %s %s\n%s"
+OPENAI_NO_CONTENT = "(no content)"
+OPENAI_PARSE_ERROR = "⚠️ Failed to parse OpenAI response: %s\n%s"
+OPENAI_PARSE_EXCEPTION_LOG = "Failed to parse OpenAI response"
+
+

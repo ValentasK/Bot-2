@@ -4,24 +4,22 @@ import logging
 import aiohttp
 from dotenv import load_dotenv
 
-from config import OPENAI_CHAT_URL, OPENAI_MODEL
+import config
 
 # Load environment variables from .env file
 load_dotenv()
 
-log = logging.getLogger("bot")
+log = logging.getLogger(config.LOG_NAME)
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = os.getenv(config.ENV_OPENAI_API_KEY)
 
 
 async def openai_chat(session: aiohttp.ClientSession, user_message: str) -> str:
-    """
-    Minimal call to OpenAI Chat Completions with strong logging.
-    """
+    """Send a chat message to OpenAI and return the response."""
     payload = {
-        "model": OPENAI_MODEL,
+        "model": config.OPENAI_MODEL,
         "messages": [
-            {"role": "system", "content": "You are a helpful assistant. Be concise."},
+            {"role": "system", "content": config.OPENAI_SYSTEM_MESSAGE},
             {"role": "user", "content": user_message}
         ]
     }
@@ -30,16 +28,16 @@ async def openai_chat(session: aiohttp.ClientSession, user_message: str) -> str:
         "Content-Type": "application/json",
     }
 
-    log.info("[OpenAI] Request: %s", json.dumps(payload, ensure_ascii=False))
-    async with session.post(OPENAI_CHAT_URL, headers=headers, json=payload, timeout=120) as resp:
+    log.info(config.OPENAI_LOG_REQUEST, json.dumps(payload, ensure_ascii=False))
+    async with session.post(config.OPENAI_CHAT_URL, headers=headers, json=payload, timeout=config.OPENAI_TIMEOUT) as resp:
         text = await resp.text()
-        log.info("[OpenAI] Status: %s %s", resp.status, resp.reason)
-        log.info("[OpenAI] Raw response: %s", text)
+        log.info(config.OPENAI_LOG_STATUS, resp.status, resp.reason)
+        log.info(config.OPENAI_LOG_RESPONSE, text)
         if resp.status != 200:
-            return f"❌ OpenAI error: {resp.status} {resp.reason}\n{text}"
+            return config.OPENAI_ERROR_MESSAGE % (resp.status, resp.reason, text)
         data = json.loads(text)
         try:
-            return data["choices"][0]["message"]["content"] or "(no content)"
+            return data["choices"][0]["message"]["content"] or config.OPENAI_NO_CONTENT
         except Exception as e:
-            log.exception("Failed to parse OpenAI response")
-            return f"⚠️ Failed to parse OpenAI response: {e}\n{text}"
+            log.exception(config.OPENAI_PARSE_EXCEPTION_LOG)
+            return config.OPENAI_PARSE_ERROR % (e, text)
