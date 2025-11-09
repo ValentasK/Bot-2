@@ -4,13 +4,13 @@ import logging
 import aiohttp
 from dotenv import load_dotenv
 
+from config import OPENAI_CHAT_URL, OPENAI_MODEL
+
 # Load environment variables from .env file
 load_dotenv()
 
 log = logging.getLogger("bot")
 
-OPENAI_CHAT_URL = "https://api.openai.com/v1/chat/completions"
-OPENAI_MODEL = "gpt-4o-mini"  # change if you prefer another model
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
