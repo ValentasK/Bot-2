@@ -10,6 +10,8 @@ python -m pip install aiohttp discord.py
 
 python -m pip install langgraph langchain-openai langchain-core
 
+python -m pip install asyncpg
+
 
 -------------------------
 ctrl + H to see hidden files

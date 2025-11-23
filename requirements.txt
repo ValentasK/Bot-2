@@ -5,3 +5,4 @@ discord.py
 langgraph
 langchain-openai
 langchain-core
+asyncpg
