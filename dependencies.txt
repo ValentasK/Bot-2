@@ -12,6 +12,33 @@ python -m pip install langgraph langchain-openai langchain-core
 
 python -m pip install asyncpg
 
+---------------- Postgre SQL --------------
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+
+#Start and enable PostgreSQL:
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+
+#Check status:
+sudo systemctl status postgresql
+
+#Log in as the postgres OS user
+sudo -u postgres psql
+
+#You should now see a prompt like:
+postgres=#
+
+#Inside psql, run:
+\password postgres
+
+#It will ask:
+Enter new password:
+Enter it again:
+
+#Type the password you want (e.g. 1988), then exit:
+\q
+
 
 -------------------------
 ctrl + H to see hidden files
